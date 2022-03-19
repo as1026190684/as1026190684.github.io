@@ -216,13 +216,6 @@
   </url>
   
   <url>
-    <loc>https://example.com/tags/JVM/</loc>
-    <lastmod>2022-03-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://example.com/tags/MySQL/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -230,7 +223,7 @@
   </url>
   
   <url>
-    <loc>https://example.com/tags/SpringBoot/</loc>
+    <loc>https://example.com/tags/JVM/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -244,6 +237,13 @@
   </url>
   
   <url>
+    <loc>https://example.com/tags/SpringBoot/</loc>
+    <lastmod>2022-03-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://example.com/tags/Thread/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -251,14 +251,14 @@
   </url>
   
   <url>
-    <loc>https://example.com/tags/ZooKeeper/</loc>
+    <loc>https://example.com/tags/Https/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://example.com/tags/Https/</loc>
+    <loc>https://example.com/tags/ZooKeeper/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -295,13 +295,6 @@
   </url>
   
   <url>
-    <loc>https://example.com/categories/JVM/</loc>
-    <lastmod>2022-03-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://example.com/categories/MySQL/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -309,7 +302,7 @@
   </url>
   
   <url>
-    <loc>https://example.com/categories/ZooKeeper/</loc>
+    <loc>https://example.com/categories/JVM/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -317,6 +310,13 @@
   
   <url>
     <loc>https://example.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
+    <lastmod>2022-03-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://example.com/categories/ZooKeeper/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
