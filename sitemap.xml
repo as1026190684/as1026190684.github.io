@@ -207,7 +207,7 @@
   </url>
   
   <url>
-    <loc>https://example.com/tags/MySQL/</loc>
+    <loc>https://example.com/tags/JVM/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -221,13 +221,6 @@
   </url>
   
   <url>
-    <loc>https://example.com/tags/JVM/</loc>
-    <lastmod>2022-03-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://example.com/tags/SpringBoot/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -235,14 +228,14 @@
   </url>
   
   <url>
-    <loc>https://example.com/tags/ZooKeeper/</loc>
+    <loc>https://example.com/tags/MySQL/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://example.com/tags/Thread/</loc>
+    <loc>https://example.com/tags/ZooKeeper/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -257,6 +250,13 @@
   
   <url>
     <loc>https://example.com/tags/%E5%9F%9F%E5%90%8D/</loc>
+    <lastmod>2022-03-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://example.com/tags/Thread/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -286,14 +286,14 @@
   </url>
   
   <url>
-    <loc>https://example.com/categories/MySQL/</loc>
+    <loc>https://example.com/categories/JVM/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://example.com/categories/JVM/</loc>
+    <loc>https://example.com/categories/MySQL/</loc>
     <lastmod>2022-03-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
