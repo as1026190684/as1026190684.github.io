@@ -3,11 +3,11 @@
   <title>YTTE</title>
   
   <subtitle>Personal Blogs</subtitle>
-  <link href="https://example.com/atom.xml" rel="self"/>
+  <link href="https://gb.ytte.top/atom.xml" rel="self"/>
   
-  <link href="https://example.com/"/>
+  <link href="https://gb.ytte.top/"/>
   <updated>2022-03-19T08:51:34.035Z</updated>
-  <id>https://example.com/</id>
+  <id>https://gb.ytte.top/</id>
   
   <author>
     <name>JX</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>456</title>
-    <link href="https://example.com/2022/03/19/456/"/>
-    <id>https://example.com/2022/03/19/456/</id>
+    <link href="https://gb.ytte.top/2022/03/19/456/"/>
+    <id>https://gb.ytte.top/2022/03/19/456/</id>
     <published>2022-03-19T08:51:26.000Z</published>
     <updated>2022-03-19T08:51:34.035Z</updated>
     
@@ -35,8 +35,8 @@
   
   <entry>
     <title>https</title>
-    <link href="https://example.com/2022/03/19/https/"/>
-    <id>https://example.com/2022/03/19/https/</id>
+    <link href="https://gb.ytte.top/2022/03/19/https/"/>
+    <id>https://gb.ytte.top/2022/03/19/https/</id>
     <published>2022-03-19T06:08:00.000Z</published>
     <updated>2022-03-19T06:12:11.172Z</updated>
     
@@ -47,17 +47,17 @@
     
     
     
-    <category term="服务器" scheme="https://example.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <category term="服务器" scheme="https://gb.ytte.top/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-    <category term="Https" scheme="https://example.com/tags/Https/"/>
+    <category term="Https" scheme="https://gb.ytte.top/tags/Https/"/>
     
   </entry>
   
   <entry>
     <title>Thread</title>
-    <link href="https://example.com/2022/03/19/Thread%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    <id>https://example.com/2022/03/19/Thread%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
+    <link href="https://gb.ytte.top/2022/03/19/Thread%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    <id>https://gb.ytte.top/2022/03/19/Thread%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
     <published>2022-03-19T05:20:02.952Z</published>
     <updated>2022-03-19T07:00:21.984Z</updated>
     
@@ -73,17 +73,17 @@
     
     
     
-    <category term="java" scheme="https://example.com/categories/java/"/>
+    <category term="java" scheme="https://gb.ytte.top/categories/java/"/>
     
     
-    <category term="Thread" scheme="https://example.com/tags/Thread/"/>
+    <category term="Thread" scheme="https://gb.ytte.top/tags/Thread/"/>
     
   </entry>
   
   <entry>
     <title>SpringCloud alibaba</title>
-    <link href="https://example.com/2022/03/19/SpringCloud-alibaba/"/>
-    <id>https://example.com/2022/03/19/SpringCloud-alibaba/</id>
+    <link href="https://gb.ytte.top/2022/03/19/SpringCloud-alibaba/"/>
+    <id>https://gb.ytte.top/2022/03/19/SpringCloud-alibaba/</id>
     <published>2022-03-19T05:20:02.949Z</published>
     <updated>2022-03-19T05:19:18.107Z</updated>
     
@@ -99,17 +99,17 @@
     
     
     
-    <category term="java" scheme="https://example.com/categories/java/"/>
+    <category term="java" scheme="https://gb.ytte.top/categories/java/"/>
     
     
-    <category term="SpringCloud" scheme="https://example.com/tags/SpringCloud/"/>
+    <category term="SpringCloud" scheme="https://gb.ytte.top/tags/SpringCloud/"/>
     
   </entry>
   
   <entry>
     <title>SpringBoot</title>
-    <link href="https://example.com/2022/03/19/Springboot/"/>
-    <id>https://example.com/2022/03/19/Springboot/</id>
+    <link href="https://gb.ytte.top/2022/03/19/Springboot/"/>
+    <id>https://gb.ytte.top/2022/03/19/Springboot/</id>
     <published>2022-03-19T05:20:02.947Z</published>
     <updated>2022-03-19T06:53:40.694Z</updated>
     
@@ -125,17 +125,17 @@
     
     
     
-    <category term="java" scheme="https://example.com/categories/java/"/>
+    <category term="java" scheme="https://gb.ytte.top/categories/java/"/>
     
     
-    <category term="SpringBoot" scheme="https://example.com/tags/SpringBoot/"/>
+    <category term="SpringBoot" scheme="https://gb.ytte.top/tags/SpringBoot/"/>
     
   </entry>
   
   <entry>
     <title>MySQL</title>
-    <link href="https://example.com/2022/03/19/MySQL/"/>
-    <id>https://example.com/2022/03/19/MySQL/</id>
+    <link href="https://gb.ytte.top/2022/03/19/MySQL/"/>
+    <id>https://gb.ytte.top/2022/03/19/MySQL/</id>
     <published>2022-03-19T05:20:02.939Z</published>
     <updated>2022-03-19T06:57:59.606Z</updated>
     
@@ -151,17 +151,17 @@
     
     
     
-    <category term="MySQL" scheme="https://example.com/categories/MySQL/"/>
+    <category term="MySQL" scheme="https://gb.ytte.top/categories/MySQL/"/>
     
     
-    <category term="MySQL" scheme="https://example.com/tags/MySQL/"/>
+    <category term="MySQL" scheme="https://gb.ytte.top/tags/MySQL/"/>
     
   </entry>
   
   <entry>
     <title>JVM上篇</title>
-    <link href="https://example.com/2022/03/19/JVM%E4%B8%8A%E7%AF%87/"/>
-    <id>https://example.com/2022/03/19/JVM%E4%B8%8A%E7%AF%87/</id>
+    <link href="https://gb.ytte.top/2022/03/19/JVM%E4%B8%8A%E7%AF%87/"/>
+    <id>https://gb.ytte.top/2022/03/19/JVM%E4%B8%8A%E7%AF%87/</id>
     <published>2022-03-19T05:20:02.937Z</published>
     <updated>2022-03-19T06:58:22.647Z</updated>
     
@@ -177,17 +177,17 @@
     
     
     
-    <category term="JVM" scheme="https://example.com/categories/JVM/"/>
+    <category term="JVM" scheme="https://gb.ytte.top/categories/JVM/"/>
     
     
-    <category term="JVM" scheme="https://example.com/tags/JVM/"/>
+    <category term="JVM" scheme="https://gb.ytte.top/tags/JVM/"/>
     
   </entry>
   
   <entry>
     <title>Filter/ Lstener/ Servlet/四大域对象</title>
-    <link href="https://example.com/2022/03/19/Filter%E3%80%81Listener%E3%80%81Servlet%E3%80%81%E5%9B%9B%E5%A4%A7%E5%9F%9F%E5%AF%B9%E8%B1%A1/"/>
-    <id>https://example.com/2022/03/19/Filter%E3%80%81Listener%E3%80%81Servlet%E3%80%81%E5%9B%9B%E5%A4%A7%E5%9F%9F%E5%AF%B9%E8%B1%A1/</id>
+    <link href="https://gb.ytte.top/2022/03/19/Filter%E3%80%81Listener%E3%80%81Servlet%E3%80%81%E5%9B%9B%E5%A4%A7%E5%9F%9F%E5%AF%B9%E8%B1%A1/"/>
+    <id>https://gb.ytte.top/2022/03/19/Filter%E3%80%81Listener%E3%80%81Servlet%E3%80%81%E5%9B%9B%E5%A4%A7%E5%9F%9F%E5%AF%B9%E8%B1%A1/</id>
     <published>2022-03-19T05:20:02.934Z</published>
     <updated>2022-03-19T06:59:02.720Z</updated>
     
@@ -203,17 +203,17 @@
     
     
     
-    <category term="java" scheme="https://example.com/categories/java/"/>
+    <category term="java" scheme="https://gb.ytte.top/categories/java/"/>
     
     
-    <category term="基础" scheme="https://example.com/tags/%E5%9F%BA%E7%A1%80/"/>
+    <category term="基础" scheme="https://gb.ytte.top/tags/%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
   <entry>
     <title>一级域名</title>
-    <link href="https://example.com/2022/03/19/%E4%B8%80%E7%BA%A7%E5%9F%9F%E5%90%8D/"/>
-    <id>https://example.com/2022/03/19/%E4%B8%80%E7%BA%A7%E5%9F%9F%E5%90%8D/</id>
+    <link href="https://gb.ytte.top/2022/03/19/%E4%B8%80%E7%BA%A7%E5%9F%9F%E5%90%8D/"/>
+    <id>https://gb.ytte.top/2022/03/19/%E4%B8%80%E7%BA%A7%E5%9F%9F%E5%90%8D/</id>
     <published>2022-03-19T05:20:02.928Z</published>
     <updated>2022-03-19T06:00:25.423Z</updated>
     
@@ -229,17 +229,17 @@
     
     
     
-    <category term="服务器" scheme="https://example.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <category term="服务器" scheme="https://gb.ytte.top/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-    <category term="域名" scheme="https://example.com/tags/%E5%9F%9F%E5%90%8D/"/>
+    <category term="域名" scheme="https://gb.ytte.top/tags/%E5%9F%9F%E5%90%8D/"/>
     
   </entry>
   
   <entry>
     <title>typora</title>
-    <link href="https://example.com/2022/03/19/%E4%BD%BF%E7%94%A8typora%E5%86%99%E6%96%87%E6%A1%A3%E4%BC%A0%E5%9B%BE%E7%89%87%EF%BC%8C%E5%86%8D%E4%B8%8A%E4%BC%A0%E7%9F%B3%E5%A2%A8%E7%AD%89%E7%BD%91%E7%AB%99%E7%9A%84%E6%96%B9%E6%B3%95/"/>
-    <id>https://example.com/2022/03/19/%E4%BD%BF%E7%94%A8typora%E5%86%99%E6%96%87%E6%A1%A3%E4%BC%A0%E5%9B%BE%E7%89%87%EF%BC%8C%E5%86%8D%E4%B8%8A%E4%BC%A0%E7%9F%B3%E5%A2%A8%E7%AD%89%E7%BD%91%E7%AB%99%E7%9A%84%E6%96%B9%E6%B3%95/</id>
+    <link href="https://gb.ytte.top/2022/03/19/%E4%BD%BF%E7%94%A8typora%E5%86%99%E6%96%87%E6%A1%A3%E4%BC%A0%E5%9B%BE%E7%89%87%EF%BC%8C%E5%86%8D%E4%B8%8A%E4%BC%A0%E7%9F%B3%E5%A2%A8%E7%AD%89%E7%BD%91%E7%AB%99%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+    <id>https://gb.ytte.top/2022/03/19/%E4%BD%BF%E7%94%A8typora%E5%86%99%E6%96%87%E6%A1%A3%E4%BC%A0%E5%9B%BE%E7%89%87%EF%BC%8C%E5%86%8D%E4%B8%8A%E4%BC%A0%E7%9F%B3%E5%A2%A8%E7%AD%89%E7%BD%91%E7%AB%99%E7%9A%84%E6%96%B9%E6%B3%95/</id>
     <published>2022-03-19T05:20:02.925Z</published>
     <updated>2022-03-19T06:00:16.520Z</updated>
     
@@ -257,17 +257,17 @@
     
     
     
-    <category term="杂项" scheme="https://example.com/categories/%E6%9D%82%E9%A1%B9/"/>
+    <category term="杂项" scheme="https://gb.ytte.top/categories/%E6%9D%82%E9%A1%B9/"/>
     
     
-    <category term="typora" scheme="https://example.com/tags/typora/"/>
+    <category term="typora" scheme="https://gb.ytte.top/tags/typora/"/>
     
   </entry>
   
   <entry>
     <title>谷粒商城步骤笔记</title>
-    <link href="https://example.com/2022/03/19/%E8%B0%B7%E7%B2%92%E5%95%86%E5%9F%8E%E6%AD%A5%E9%AA%A4%E7%AC%94%E8%AE%B0/"/>
-    <id>https://example.com/2022/03/19/%E8%B0%B7%E7%B2%92%E5%95%86%E5%9F%8E%E6%AD%A5%E9%AA%A4%E7%AC%94%E8%AE%B0/</id>
+    <link href="https://gb.ytte.top/2022/03/19/%E8%B0%B7%E7%B2%92%E5%95%86%E5%9F%8E%E6%AD%A5%E9%AA%A4%E7%AC%94%E8%AE%B0/"/>
+    <id>https://gb.ytte.top/2022/03/19/%E8%B0%B7%E7%B2%92%E5%95%86%E5%9F%8E%E6%AD%A5%E9%AA%A4%E7%AC%94%E8%AE%B0/</id>
     <published>2022-03-19T05:20:02.922Z</published>
     <updated>2022-03-19T05:54:28.627Z</updated>
     
@@ -283,17 +283,17 @@
     
     
     
-    <category term="项目" scheme="https://example.com/categories/%E9%A1%B9%E7%9B%AE/"/>
+    <category term="项目" scheme="https://gb.ytte.top/categories/%E9%A1%B9%E7%9B%AE/"/>
     
     
-    <category term="谷粒商城" scheme="https://example.com/tags/%E8%B0%B7%E7%B2%92%E5%95%86%E5%9F%8E/"/>
+    <category term="谷粒商城" scheme="https://gb.ytte.top/tags/%E8%B0%B7%E7%B2%92%E5%95%86%E5%9F%8E/"/>
     
   </entry>
   
   <entry>
     <title>二级域名</title>
-    <link href="https://example.com/2022/03/19/%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/"/>
-    <id>https://example.com/2022/03/19/%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/</id>
+    <link href="https://gb.ytte.top/2022/03/19/%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/"/>
+    <id>https://gb.ytte.top/2022/03/19/%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D/</id>
     <published>2022-03-19T05:20:02.916Z</published>
     <updated>2022-03-19T05:59:16.500Z</updated>
     
@@ -310,17 +310,17 @@
     
     
     
-    <category term="服务器" scheme="https://example.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <category term="服务器" scheme="https://gb.ytte.top/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-    <category term="域名" scheme="https://example.com/tags/%E5%9F%9F%E5%90%8D/"/>
+    <category term="域名" scheme="https://gb.ytte.top/tags/%E5%9F%9F%E5%90%8D/"/>
     
   </entry>
   
   <entry>
     <title>session，cookie，token</title>
-    <link href="https://example.com/2022/03/14/session%EF%BC%8Ccookie%EF%BC%8Ctoken/"/>
-    <id>https://example.com/2022/03/14/session%EF%BC%8Ccookie%EF%BC%8Ctoken/</id>
+    <link href="https://gb.ytte.top/2022/03/14/session%EF%BC%8Ccookie%EF%BC%8Ctoken/"/>
+    <id>https://gb.ytte.top/2022/03/14/session%EF%BC%8Ccookie%EF%BC%8Ctoken/</id>
     <published>2022-03-14T10:19:04.000Z</published>
     <updated>2022-03-19T05:16:32.982Z</updated>
     
@@ -337,17 +337,17 @@
     
     
     
-    <category term="java" scheme="https://example.com/categories/java/"/>
+    <category term="java" scheme="https://gb.ytte.top/categories/java/"/>
     
     
-    <category term="基础" scheme="https://example.com/tags/%E5%9F%BA%E7%A1%80/"/>
+    <category term="基础" scheme="https://gb.ytte.top/tags/%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
   <entry>
     <title>Consumer、Supplier、Predicate和Function</title>
-    <link href="https://example.com/2022/03/14/Consumer%E3%80%81Supplier%E3%80%81Predicate%E5%92%8CFunction/"/>
-    <id>https://example.com/2022/03/14/Consumer%E3%80%81Supplier%E3%80%81Predicate%E5%92%8CFunction/</id>
+    <link href="https://gb.ytte.top/2022/03/14/Consumer%E3%80%81Supplier%E3%80%81Predicate%E5%92%8CFunction/"/>
+    <id>https://gb.ytte.top/2022/03/14/Consumer%E3%80%81Supplier%E3%80%81Predicate%E5%92%8CFunction/</id>
     <published>2022-03-14T01:35:19.000Z</published>
     <updated>2022-03-19T07:04:55.270Z</updated>
     
@@ -363,17 +363,17 @@
     
     
     
-    <category term="java" scheme="https://example.com/categories/java/"/>
+    <category term="java" scheme="https://gb.ytte.top/categories/java/"/>
     
     
-    <category term="基础" scheme="https://example.com/tags/%E5%9F%BA%E7%A1%80/"/>
+    <category term="基础" scheme="https://gb.ytte.top/tags/%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
   <entry>
     <title>ZooKeeper</title>
-    <link href="https://example.com/2022/03/14/ZooKeeper/"/>
-    <id>https://example.com/2022/03/14/ZooKeeper/</id>
+    <link href="https://gb.ytte.top/2022/03/14/ZooKeeper/"/>
+    <id>https://gb.ytte.top/2022/03/14/ZooKeeper/</id>
     <published>2022-03-14T01:35:19.000Z</published>
     <updated>2022-03-19T06:02:09.261Z</updated>
     
@@ -389,10 +389,10 @@
     
     
     
-    <category term="ZooKeeper" scheme="https://example.com/categories/ZooKeeper/"/>
+    <category term="ZooKeeper" scheme="https://gb.ytte.top/categories/ZooKeeper/"/>
     
     
-    <category term="ZooKeeper" scheme="https://example.com/tags/ZooKeeper/"/>
+    <category term="ZooKeeper" scheme="https://gb.ytte.top/tags/ZooKeeper/"/>
     
   </entry>
   
