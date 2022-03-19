@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>MySQL | Hexo</title>
+  <meta name="description" content="MySQL基础高级8、 索引的创建与设计原则2、索引的必要使用场景1). 字段的数值有唯一性的限制业务上具有唯一特性的字段，即使是组合字段，也必须建成唯一索引。 说明：唯一索引影响了 insert 速度，这个速度损耗可以忽略，但提高查找速度是明显的。 2). 频繁作为 WHERE 查询条件的字段某个字段在SELECT语句的 WHERE 条件中经常被使用到，那么就需要给这个字段创建索引了。尤其是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL">
+<meta property="og:url" content="https://example.com/2022/03/19/MySQL/index.html">
+<meta property="og:site_name" content="YTTE">
+<meta property="og:description" content="MySQL基础高级8、 索引的创建与设计原则2、索引的必要使用场景1). 字段的数值有唯一性的限制业务上具有唯一特性的字段，即使是组合字段，也必须建成唯一索引。 说明：唯一索引影响了 insert 速度，这个速度损耗可以忽略，但提高查找速度是明显的。 2). 频繁作为 WHERE 查询条件的字段某个字段在SELECT语句的 WHERE 条件中经常被使用到，那么就需要给这个字段创建索引了。尤其是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blogimg.ytte.top//img-jixiang/20220306131117.png">
+<meta property="og:image" content="https://blogimg.ytte.top//img-jixiang/20220306160740.png">
+<meta property="og:image" content="https://blogimg.ytte.top//img-jixiang/20220306161326.png">
+<meta property="og:image" content="https://blogimg.ytte.top//img-jixiang/20220306161828.png">
+<meta property="og:image" content="https://blogimg.ytte.top//img-jixiang/20220306162540.png">
+<meta property="article:published_time" content="2022-03-19T05:20:02.939Z">
+<meta property="article:modified_time" content="2022-03-19T06:57:59.606Z">
+<meta property="article:author" content="JX">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blogimg.ytte.top//img-jixiang/20220306131117.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://example.com/2022/03/19/MySQL/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="YTTE" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/as1026190684" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">YTTE</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Java Golang</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Anhui, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/as1026190684" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ZooKeeper/">ZooKeeper</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Https/" rel="tag">Https</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringCloud/" rel="tag">SpringCloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ZooKeeper/" rel="tag">ZooKeeper</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typora/" rel="tag">typora</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%9F%E5%90%8D/" rel="tag">域名</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80/" rel="tag">基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B0%B7%E7%B2%92%E5%95%86%E5%9F%8E/" rel="tag">谷粒商城</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Https/" style="font-size: 13px;">Https</a> <a href="/tags/JVM/" style="font-size: 13px;">JVM</a> <a href="/tags/MySQL/" style="font-size: 13px;">MySQL</a> <a href="/tags/SpringBoot/" style="font-size: 13px;">SpringBoot</a> <a href="/tags/SpringCloud/" style="font-size: 13px;">SpringCloud</a> <a href="/tags/Thread/" style="font-size: 13px;">Thread</a> <a href="/tags/ZooKeeper/" style="font-size: 13px;">ZooKeeper</a> <a href="/tags/typora/" style="font-size: 13px;">typora</a> <a href="/tags/%E5%9F%9F%E5%90%8D/" style="font-size: 13.5px;">域名</a> <a href="/tags/%E5%9F%BA%E7%A1%80/" style="font-size: 14px;">基础</a> <a href="/tags/%E8%B0%B7%E7%B2%92%E5%95%86%E5%9F%8E/" style="font-size: 13px;">谷粒商城</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/19/https/" class="title">https</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-19T06:08:00.000Z" itemprop="datePublished">2022-03-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/java/">java</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/19/Thread%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="title">Thread</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-19T05:20:02.952Z" itemprop="datePublished">2022-03-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/java/">java</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/19/SpringCloud-alibaba/" class="title">SpringCloud alibaba</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-19T05:20:02.949Z" itemprop="datePublished">2022-03-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/java/">java</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/19/Springboot/" class="title">SpringBoot</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-19T05:20:02.947Z" itemprop="datePublished">2022-03-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/MySQL/">MySQL</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/19/MySQL/" class="title">MySQL</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-19T05:20:02.939Z" itemprop="datePublished">2022-03-19</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL"><span class="toc-number">1.</span> <span class="toc-text">MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-number">2.</span> <span class="toc-text">基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">高级</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8%E3%80%81-%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-number">4.</span> <span class="toc-text">8、 索引的创建与设计原则</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E7%B4%A2%E5%BC%95%E7%9A%84%E5%BF%85%E8%A6%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">4.1.</span> <span class="toc-text">2、索引的必要使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AD%97%E6%AE%B5%E7%9A%84%E6%95%B0%E5%80%BC%E6%9C%89%E5%94%AF%E4%B8%80%E6%80%A7%E7%9A%84%E9%99%90%E5%88%B6"><span class="toc-number">4.1.1.</span> <span class="toc-text">1). 字段的数值有唯一性的限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%A2%91%E7%B9%81%E4%BD%9C%E4%B8%BA-WHERE-%E6%9F%A5%E8%AF%A2%E6%9D%A1%E4%BB%B6%E7%9A%84%E5%AD%97%E6%AE%B5"><span class="toc-number">4.1.2.</span> <span class="toc-text">2). 频繁作为 WHERE 查询条件的字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BB%8F%E5%B8%B8-GROUP-BY-%E5%92%8C-ORDER-BY-%E7%9A%84%E5%88%97"><span class="toc-number">4.1.3.</span> <span class="toc-text">3). 经常 GROUP BY 和 ORDER BY 的列</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-GROUP-BY"><span class="toc-number">4.1.3.1.</span> <span class="toc-text">1. GROUP BY</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ORDER-BY"><span class="toc-number">4.1.3.2.</span> <span class="toc-text">2. ORDER BY</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-ORDER-BY%E5%92%8CGROUP-BY%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">4.1.3.3.</span> <span class="toc-text">3. ORDER BY和GROUP BY同时使用的情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-UPDATE%E3%80%81DELETE-%E7%9A%84-WHERE-%E6%9D%A1%E4%BB%B6%E5%88%97"><span class="toc-number">4.1.4.</span> <span class="toc-text">4). UPDATE、DELETE 的 WHERE 条件列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-DISTINCT-%E5%AD%97%E6%AE%B5%E9%9C%80%E8%A6%81%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">4.1.5.</span> <span class="toc-text">5). DISTINCT 字段需要创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%A4%9A%E8%A1%A8-JOIN-%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C%E6%97%B6%EF%BC%8C%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">4.1.6.</span> <span class="toc-text">6). 多表 JOIN 连接操作时，创建索引注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E4%BD%BF%E7%94%A8%E5%88%97%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%B0%8F%E7%9A%84%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">4.1.7.</span> <span class="toc-text">7). 使用列的类型小的创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E4%BD%BF%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E7%BC%80%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">4.1.8.</span> <span class="toc-text">8). 使用字符串前缀创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%8C%BA%E5%88%86%E5%BA%A6%E9%AB%98-%E6%95%A3%E5%88%97%E6%80%A7%E9%AB%98-%E7%9A%84%E5%88%97%E9%80%82%E5%90%88%E4%BD%9C%E4%B8%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">4.1.9.</span> <span class="toc-text">9). 区分度高(散列性高)的列适合作为索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E4%BD%BF%E7%94%A8%E6%9C%80%E9%A2%91%E7%B9%81%E7%9A%84%E5%88%97%E6%94%BE%E5%88%B0%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E5%B7%A6%E4%BE%A7"><span class="toc-number">4.1.10.</span> <span class="toc-text">10). 使用最频繁的列放到联合索引的左侧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E5%9C%A8%E5%A4%9A%E4%B8%AA%E5%AD%97%E6%AE%B5%E9%83%BD%E8%A6%81%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8C%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E4%BC%98%E4%BA%8E%E5%8D%95%E5%80%BC%E7%B4%A2%E5%BC%95"><span class="toc-number">4.1.11.</span> <span class="toc-text">11). 在多个字段都要创建索引的情况下，联合索引优于单值索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%99%90%E5%88%B6%E7%B4%A2%E5%BC%95%E7%9A%84%E6%95%B0%E7%9B%AE"><span class="toc-number">4.2.</span> <span class="toc-text">3. 限制索引的数目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%93%AA%E4%BA%9B%E6%83%85%E5%86%B5%E4%B8%8D%E9%80%82%E5%90%88%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">4.3.</span> <span class="toc-text">4. 哪些情况不适合创建索引</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E8%AE%B0"><span class="toc-number">5.</span> <span class="toc-text">小记</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-MySQL" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MySQL
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/03/19/MySQL/" class="article-date">
+	  <time datetime="2022-03-19T05:20:02.939Z" itemprop="datePublished">2022-03-19</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/MySQL/" rel="tag">MySQL</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/03/19/MySQL/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <span id="more"></span>
+
+<h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h1 id="8、-索引的创建与设计原则"><a href="#8、-索引的创建与设计原则" class="headerlink" title="8、 索引的创建与设计原则"></a>8、 索引的创建与设计原则</h1><h2 id="2、索引的必要使用场景"><a href="#2、索引的必要使用场景" class="headerlink" title="2、索引的必要使用场景"></a>2、索引的必要使用场景</h2><h3 id="1-字段的数值有唯一性的限制"><a href="#1-字段的数值有唯一性的限制" class="headerlink" title="1). 字段的数值有唯一性的限制"></a>1). 字段的数值有唯一性的限制</h3><p>业务上具有唯一特性的字段，即使是组合字段，也必须建成唯一索引。</p>
+<p>说明：唯一索引影响了 insert 速度，这个速度损耗可以忽略，但提高查找速度是明显的。</p>
+<h3 id="2-频繁作为-WHERE-查询条件的字段"><a href="#2-频繁作为-WHERE-查询条件的字段" class="headerlink" title="2). 频繁作为 WHERE 查询条件的字段"></a>2). 频繁作为 WHERE 查询条件的字段</h3><p>某个字段在SELECT语句的 WHERE 条件中经常被使用到，那么就需要给这个字段创建索引了。尤其是在数据量大的情况下，创建普通索引就可以大幅提升数据查询的效率。</p>
+<p>比如查询 <code>student_id =144324</code>的时候</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> course_id ,class_id, `name`,create_time,student_id</span><br><span class="line"><span class="keyword">FROM</span> student_info </span><br><span class="line"><span class="keyword">WHERE</span> student_id <span class="operator">=</span><span class="number">144324</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>在student_id不加索引的情况下，<strong>100w</strong>条数据，耗时为<strong>350ms</strong>左右，即在百毫秒级</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student_info </span><br><span class="line"><span class="keyword">ADD</span> INDEX idx_sid(student_id)</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> student_info  #查看是否添加成功</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在添加索引的情况下，耗时为<strong>22ms</strong>，降了一个数量级，这是很客观的。</p>
+</li>
+</ul>
+<hr>
+<h3 id="3-经常-GROUP-BY-和-ORDER-BY-的列"><a href="#3-经常-GROUP-BY-和-ORDER-BY-的列" class="headerlink" title="3). 经常 GROUP BY 和 ORDER BY 的列"></a>3). 经常 GROUP BY 和 ORDER BY 的列</h3><p>索引就是让数据按照某种顺序进行存储或检索，因此当我们使用<code>GROUP BY</code>对数据进行分组查询，或者使用<code>ORDER BY</code>对数据进行排序的时候，就需要对分组或者排序的字段进行索引，从而减少排序的时间。如果待排序的列有多个，那么可以在这些列上建立组合索引。</p>
+<h4 id="1-GROUP-BY"><a href="#1-GROUP-BY" class="headerlink" title="1. GROUP BY"></a>1. GROUP BY</h4><p>eg：在100w条数据中，按照<code>student_id</code>对学生选修课程进行分组，显示不同的<code>student_id</code>和课程数量，显示100个。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> student_id ,<span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> num</span><br><span class="line"><span class="keyword">FROM</span> student_info</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> student_id LIMIT <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> INDEX idx_sid <span class="keyword">ON</span> student_info</span><br><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> student_info</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在不加索引的情况下，耗时850毫秒。</li>
+<li>在加索引的情况下（这里使用的是2）当中的<code>idx_sid</code>索引），耗时21毫秒。</li>
+</ul>
+<h4 id="2-ORDER-BY"><a href="#2-ORDER-BY" class="headerlink" title="2. ORDER BY"></a>2. ORDER BY</h4><p>ORDER BY单独使用的情况与GROUP BY差不多</p>
+<h4 id="3-ORDER-BY和GROUP-BY同时使用的情况"><a href="#3-ORDER-BY和GROUP-BY同时使用的情况" class="headerlink" title="3. ORDER BY和GROUP BY同时使用的情况"></a>3. ORDER BY和GROUP BY同时使用的情况</h4><p>&#x3D;&#x3D;由于<code>GROUP BY</code>先执行，且GROUP BY为先排序再分组，所以主要耗时就集中在GROUP BY上。&#x3D;&#x3D;</p>
+<p><strong>使用以下三种情况来观察不同索引状况下，sql执行的速度差异</strong></p>
+<ul>
+<li>三种情况：</li>
+</ul>
+<p>​        ①. <code>student_id</code>和<code>create_time</code>分别建立索引</p>
+<p>​        ②. <code>student_id</code>和<code>create_time</code>建立联合索引，且student_id在前</p>
+<p>​        ③. <code>student_id</code>和<code>create_time</code>建立联合索引，且create_time在前</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> student_id,<span class="built_in">COUNT</span>(<span class="operator">*</span>)	<span class="keyword">AS</span>	num	</span><br><span class="line"><span class="keyword">FROM</span>	student_info</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span>	student_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span>	create_time <span class="keyword">desc</span></span><br><span class="line">LIMIT <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<p>不加除主键索引以外的其他索引的情况下，耗时约&#x3D;&#x3D;0.8~1s&#x3D;&#x3D;</p>
+<ul>
+<li>两种版本：</li>
+</ul>
+<p>​        ①. MySQL 5.7.5及以上功能依赖检测功能</p>
+<p>​        ②. MySQL 5.7.5以下无依赖检测功能</p>
+<p>执行上方代码后MySQL 5.7.5及以上会报错</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sql_mode<span class="operator">=</span>only_full_group_by #出现问题</span><br></pre></td></tr></table></figure>
+
+<p>MySQL 5.7.5及以上由于<code>sql_mode=only_full_group_by</code>是默认开启依赖检测功能，所以<code>HAVING</code>条件或<code>ORDER BY</code>列表的查询引用在<code>GROUP BY</code>子句中。<br>    <strong>简单来说就是：输出的结果是叫target list，就是select后面跟着的字段，还有一个地方group by column，就是group by后面跟着的字段。由于开启ONLY_FULL_GROUP_BY的设置，如果一个字段没有在target list和group by字段中同时出现，或者是聚合函数的值的话，那么这条sql查询是被mysql认为非法的，会报错误。</strong></p>
+<p>但是如果同时GROUP BY student_id，create_time 这两个字段，就失去了本例的作用。所以需要MySQL 5.7.5及以上的需要关闭依赖检测功能</p>
+<p>具体解析链接&#x3D;&#x3D;&#x3D;&#x3D;》<a target="_blank" rel="noopener" href="https://shimo.im/docs/VMAPVynD0nU1vbqg">文档——石墨</a></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> @<span class="variable">@global</span>.sql_mode #查看sql_mode详细</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@global</span>.sql_mode <span class="operator">=</span><span class="string">&#x27;STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&#x27;</span>; #去掉ONLY_FULL_GROUP_BY，重新设置值，对于新建的数据库有效 <span class="number">8.0</span>中还要去掉NO_AUTO_CREATE_USER</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> sql_mode<span class="operator">=</span><span class="string">&#x27;STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&#x27;</span>;  #对于已存在的数据库，则需要在对应的数据下执行</span><br></pre></td></tr></table></figure>
+
+<p>继续测试</p>
+<ol>
+<li><p>添加单列<code>student_id</code>索引和<code>create_time</code>索引</p>
+<p>​    5.7中：</p>
+<p>耗时6s左右，添加索引就是将这些时间提前消耗掉，让客户查询的时候减少查询时间。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student_info</span><br><span class="line"><span class="keyword">ADD</span> INDEX idx_sid(student_id);</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student_info</span><br><span class="line"><span class="keyword">ADD</span> INDEX idx_cre_time(create_time <span class="keyword">DESC</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>这里 EXPLAIN 后会发现只使用了student_id 的索引idx_sid（单列索引的情况，只使用语句执行过程第一个索引）所以这里只使用了索引idx_sid，而idx_cre_time压根没用到。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> student_info</span><br><span class="line"></span><br><span class="line">EXPLAIN </span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> student_id,<span class="built_in">COUNT</span>(<span class="operator">*</span>)	<span class="keyword">AS</span>	num	</span><br><span class="line"><span class="keyword">FROM</span>	student_info</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span>	student_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span>	create_time <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+
+<p>各自单列索引的情况下，耗时大约1.5s（上面不加索引的情况下耗时1s）</p>
+<p>​    8.0中</p>
+<p>&#x3D;&#x3D;todo 不明原因，未得到解决，上述方式在5.7中大约需要1.5s左右，而在8.0中需要几分钟的时间。&#x3D;&#x3D;</p>
+</li>
+<li><p>联合索引的情况① ：</p>
+<p>先删除除主键外其他的单列索引</p>
+<p><strong>idx_sid_cre_time(student_id,create_time)，student_id在前</strong></p>
+<p>​    5.7：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student_info</span><br><span class="line"><span class="keyword">ADD</span> INDEX idx_sid_cre_time(student_id,create_time);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> student_info;</span><br><span class="line"></span><br><span class="line">EXPLAIN </span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> student_id,<span class="built_in">COUNT</span>(<span class="operator">*</span>)	<span class="keyword">AS</span>	num	</span><br><span class="line"><span class="keyword">FROM</span>	student_info</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span>	student_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span>	create_time <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://blogimg.ytte.top//img-jixiang/20220306131117.png"></p>
+<p>耗时约&#x3D;&#x3D;300ms&#x3D;&#x3D;左右（未加索引1s左右，单列索引1.5s左右）</p>
+<p>8.0：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> INDEX  idx_sid <span class="keyword">ON</span> student_info ;</span><br><span class="line"><span class="keyword">DROP</span> INDEX  idx_cre_time <span class="keyword">ON</span> student_info;</span><br><span class="line"><span class="keyword">DROP</span> INDEX  idx_sid_cre_time <span class="keyword">ON</span> student_info;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student_info</span><br><span class="line"><span class="keyword">ADD</span> INDEX idx_sid_cre_time(student_id,create_time <span class="keyword">DESC</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> student_info;</span><br><span class="line"></span><br><span class="line">EXPLAIN </span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> student_id,<span class="built_in">COUNT</span>(<span class="operator">*</span>)	<span class="keyword">AS</span>	num	</span><br><span class="line"><span class="keyword">FROM</span>	student_info</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span>	student_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span>	create_time <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>索引不加<code>DESC</code>时，耗时约&#x3D;&#x3D;800ms&#x3D;&#x3D;左右（不加索引1s左右，单列索引几分钟）</p>
+</li>
+<li><p>索引加<code>DESC</code>时，耗时约&#x3D;&#x3D;300ms&#x3D;&#x3D;左右（不加索引1s左右，单列索引几分钟）</p>
+</li>
+</ul>
+</li>
+<li><p>联合索引的情况② ：</p>
+<p><strong>idx_cre_sid_time(create_time,student_id)，create_time在前</strong></p>
+<p>在语句执行中，先进行group by 所以此时如果存在<code>idx_sid(student_id)</code>的话，会优先使用group by student_id的student_id索引（idx_sid），这样就变成了使用单列索引，联合索引idx_sid_cre_time就不起作用了。</p>
+<p>如果不存在idx_sid，只有联合索引idx_cre_sid_time：</p>
+<p>​    5.7：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> INDEX  idx_sid <span class="keyword">ON</span> student_info ;</span><br><span class="line"><span class="keyword">DROP</span> INDEX  idx_cre_time <span class="keyword">ON</span> student_info;</span><br><span class="line"><span class="keyword">DROP</span> INDEX  idx_sid_cre_time <span class="keyword">ON</span> student_info;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student_info</span><br><span class="line"><span class="keyword">ADD</span> INDEX idx_cre_sid_time(create_time,student_id);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> student_id,<span class="built_in">COUNT</span>(<span class="operator">*</span>)	<span class="keyword">AS</span>	num	</span><br><span class="line"><span class="keyword">FROM</span>	student_info</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span>	student_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span>	create_time <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+
+<p>耗时约&#x3D;&#x3D;800ms左右&#x3D;&#x3D; （未加索引1s左右，单列索引1.5s左右，idx_sid_cre_time索引耗时约300ms）</p>
+<p>​    8.0 ：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> INDEX  idx_sid <span class="keyword">ON</span> student_info ;</span><br><span class="line"><span class="keyword">DROP</span> INDEX  idx_cre_time <span class="keyword">ON</span> student_info;</span><br><span class="line"><span class="keyword">DROP</span> INDEX  idx_sid_cre_time <span class="keyword">ON</span> student_info;</span><br><span class="line"><span class="keyword">DROP</span> INDEX  idx_cre_sid_time <span class="keyword">ON</span> student_info;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> student_info</span><br><span class="line"><span class="keyword">ADD</span> INDEX idx_cre_sid_time(create_time <span class="keyword">DESC</span>,student_id);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> student_id,<span class="built_in">COUNT</span>(<span class="operator">*</span>)	<span class="keyword">AS</span>	num	</span><br><span class="line"><span class="keyword">FROM</span>	student_info</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span>	student_id</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span>	create_time <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>索引不加<code>DESC</code>时，耗时约&#x3D;&#x3D;1s&#x3D;&#x3D;左右（不加索引1s左右，单列索引几分钟，idx_sid_cre_time索引800ms左右）</p>
+</li>
+<li><p>索引加<code>DESC</code>时，耗时约&#x3D;&#x3D;1s&#x3D;&#x3D;左右（不加索引1s左右，单列索引几分钟，idx_sid_cre_time索引300ms左右）</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-UPDATE、DELETE-的-WHERE-条件列"><a href="#4-UPDATE、DELETE-的-WHERE-条件列" class="headerlink" title="4). UPDATE、DELETE 的 WHERE 条件列"></a>4). UPDATE、DELETE 的 WHERE 条件列</h3><p>对数据按照某个条件进行查询后再进行 UPDATE 或 DELETE 的操作，如果对 WHERE 字段创建了索引，就能大幅提升效率。</p>
+<p>原理是因为我们需要先根据 WHERE 条件列检索出来这条记录，然后再对它进行更新或删除。<strong>如果进行更新的时候，更新的字段是非索引字段，提升的效率会更明显，这是因为非索引字段更新不需要对索引进行维护。</strong></p>
+<h3 id="5-DISTINCT-字段需要创建索引"><a href="#5-DISTINCT-字段需要创建索引" class="headerlink" title="5). DISTINCT 字段需要创建索引"></a>5). DISTINCT 字段需要创建索引</h3><p>有时候我们需要对某个字段进行去重，使用 DISTINCT，那么对这个字段创建索引，也会提升查询效率。</p>
+<p>比如，我们想要查询课程表中不同的 student_id 都有哪些，如果我们没有对 student_id 创建索引，执行</p>
+<p>SQL 语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span>(student_id) <span class="keyword">FROM</span> `student_info`;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果（600637 条记录，运行时间 0.683s ）：</p>
+<p>如果我们对 student_id 创建索引，再执行 SQL 语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span>(student_id) <span class="keyword">FROM</span> `student_info`;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果（600637 条记录，运行时间 0.010s ）：</p>
+<p>SQL 查询效率有了提升，同时显示出来的 student_id 还是按照 递增的顺序 进行展示的。这是因为索引会对数据按照某种顺序进行排序，所以在去重的时候也会快很多。</p>
+<h3 id="6-多表-JOIN-连接操作时，创建索引注意事项"><a href="#6-多表-JOIN-连接操作时，创建索引注意事项" class="headerlink" title="6). 多表 JOIN 连接操作时，创建索引注意事项"></a>6). 多表 JOIN 连接操作时，创建索引注意事项</h3><p>首先， &#x3D;&#x3D;连接表的数量尽量不要超过 3 张&#x3D;&#x3D;，因为每增加一张表就相当于增加了一次嵌套的循环，数量级增长会非常快，严重影响查询的效率。</p>
+<p>其次， 对 WHERE 条件创建索引 ，因为 WHERE 才是对数据条件的过滤。如果在数据量非常大的情况下，没有 WHERE 条件过滤是非常可怕的。</p>
+<p>最后，&#x3D;&#x3D;类似字符串和int比较时，会存在隐式转换，即使用了函数，一旦使用了函数就会让索引失效。 对用于连接的字段创建索引 ，并且该字段在多张表中的 类型必须一致 。&#x3D;&#x3D;比如 course_id 在 student_info 表和 course 表中都为 int(11) 类型，而不能一个为 int 另一个为 varchar 类型。</p>
+<p>举个例子，如果我们只对 student_id 创建索引，执行 SQL 语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> course_id, name, student_info.student_id, course_name </span><br><span class="line"><span class="keyword">FROM</span> student_info <span class="keyword">JOIN</span> course </span><br><span class="line"><span class="keyword">ON</span> student_info.course_id <span class="operator">=</span> course.course_id </span><br><span class="line"><span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;462eed7ac6e791292a79&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果（1 条数据，运行时间 0.189s ）：</p>
+<p>这里我们对 name 创建索引，再执行上面的 SQL 语句，运行时间为 0.002s 。 </p>
+<h3 id="7-使用列的类型小的创建索引"><a href="#7-使用列的类型小的创建索引" class="headerlink" title="7). 使用列的类型小的创建索引"></a>7). 使用列的类型小的创建索引</h3><p><img src="https://blogimg.ytte.top//img-jixiang/20220306160740.png"></p>
+<h3 id="8-使用字符串前缀创建索引"><a href="#8-使用字符串前缀创建索引" class="headerlink" title="8). 使用字符串前缀创建索引"></a>8). 使用字符串前缀创建索引</h3><p><img src="https://blogimg.ytte.top//img-jixiang/20220306161326.png"></p>
+<p>创建一张商户表，因为地址字段比较长，在地址字段上建立前缀索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> shop(address <span class="type">varchar</span>(<span class="number">120</span>) <span class="keyword">not</span> <span class="keyword">null</span>); </span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> shop <span class="keyword">add</span> index(address(<span class="number">12</span>)); </span><br></pre></td></tr></table></figure>
+
+<p>问题是，截取多少呢？截取得多了，达不到节省索引存储空间的目的；截取得少了，重复内容太多，字</p>
+<p>段的散列度(选择性)会降低。<strong>怎么计算不同的长度的选择性呢？</strong></p>
+<p>先看一下字段在全部数据中的选择度：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="keyword">distinct</span> address) <span class="operator">/</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> shop;</span><br></pre></td></tr></table></figure>
+
+<p>通过不同长度去计算，与全表的选择性对比：</p>
+<p>公式：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(列名, 索引长度))<span class="operator">/</span><span class="built_in">count</span>(<span class="operator">*</span>)</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(address,<span class="number">10</span>)) <span class="operator">/</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> sub10, <span class="comment">-- 截取前10个字符的选择度 </span></span><br><span class="line"><span class="built_in">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(address,<span class="number">15</span>)) <span class="operator">/</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> sub11, <span class="comment">-- 截取前15个字符的选择度 </span></span><br><span class="line"><span class="built_in">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(address,<span class="number">20</span>)) <span class="operator">/</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> sub12, <span class="comment">-- 截取前20个字符的选择度 </span></span><br><span class="line"><span class="built_in">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(address,<span class="number">25</span>)) <span class="operator">/</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> sub13 <span class="comment">-- 截取前25个字符的选择度</span></span><br><span class="line"><span class="keyword">from</span> shop;</span><br></pre></td></tr></table></figure>
+
+<p><strong>引申另一个问题：索引列前缀对排序的影响</strong></p>
+<p><strong>拓展：Alibaba《Java开发手册》</strong></p>
+<p>&#x3D;&#x3D;在 varchar 字段上建立索引时，必须指定索引长度，根据实际文本区分度决定索引长度。&#x3D;&#x3D;</p>
+<p>说明：索引的长度与区分度是一对矛盾体，一般对字符串类型数据，长度为 20 的索引，区分度会 高达 90% 以上 ，可以使用</p>
+<p><code> count(distinct left(列名, 索引长度))/count(*)</code>的区分度来确定。</p>
+<h3 id="9-区分度高-散列性高-的列适合作为索引"><a href="#9-区分度高-散列性高-的列适合作为索引" class="headerlink" title="9). 区分度高(散列性高)的列适合作为索引"></a>9). 区分度高(散列性高)的列适合作为索引</h3><p><img src="https://blogimg.ytte.top//img-jixiang/20220306161828.png"></p>
+<h3 id="10-使用最频繁的列放到联合索引的左侧"><a href="#10-使用最频繁的列放到联合索引的左侧" class="headerlink" title="10). 使用最频繁的列放到联合索引的左侧"></a>10). 使用最频繁的列放到联合索引的左侧</h3><h3 id="11-在多个字段都要创建索引的情况下，联合索引优于单值索引"><a href="#11-在多个字段都要创建索引的情况下，联合索引优于单值索引" class="headerlink" title="11). 在多个字段都要创建索引的情况下，联合索引优于单值索引"></a>11). 在多个字段都要创建索引的情况下，联合索引优于单值索引</h3><h2 id="3-限制索引的数目"><a href="#3-限制索引的数目" class="headerlink" title="3. 限制索引的数目"></a>3. 限制索引的数目</h2><p><img src="https://blogimg.ytte.top//img-jixiang/20220306162540.png"></p>
+<h2 id="4-哪些情况不适合创建索引"><a href="#4-哪些情况不适合创建索引" class="headerlink" title="4. 哪些情况不适合创建索引"></a>4. <strong>哪些情况不适合创建索引</strong></h2><ol>
+<li>WHERE条件（包括GROUP BY、ORDER BY)里用不到的字段不需要创建索引</li>
+<li>数据量小的表最好不要使用索引</li>
+<li>有大量重复数据的列上不要建立索引<ul>
+<li>比如性别。</li>
+</ul>
+</li>
+<li>避免对经常更新的表创建过多的索引</li>
+<li>不建议用无序的值作为索引<ul>
+<li>例如身份证、UUID(在索引比较时需要转为ASCII，并且插入时可能造成页分裂)、MD5、HASH、无序长字符串等。</li>
+</ul>
+</li>
+<li>删除不再使用或者很少使用的索引</li>
+<li>不要定义冗余或重复的索引</li>
+</ol>
+<h1 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h1><ol>
+<li>我们进行内联查询前，最好能限制连的表大小的条件都先用上了，同时尽量让条件查询和分组执行的表尽量小&#x3D;&#x3D;&#x3D;&#x3D;》<a target="_blank" rel="noopener" href="https://blog.csdn.net/Tim_phper/article/details/78344444">CSDN博客_mysql联表查询优化① </a></li>
+<li></li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://example.com/2022/03/19/MySQL/" title="MySQL" target="_blank" rel="external">https://example.com/2022/03/19/MySQL/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/as1026190684" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/as1026190684" target="_blank"><span class="text-dark">YTTE</span><small class="ml-1x">Java Golang</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/03/19/Springboot/" title="SpringBoot"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/03/19/JVM%E4%B8%8A%E7%AF%87/" title="JVM上篇"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/as1026190684" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+
+</body>
+</html>
